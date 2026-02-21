@@ -1,4 +1,4 @@
 #!/bin/bash
 
 cargo build --release && \
-    ./target/release/chorus ./sample/sample.config.toml
+    ./target/release/raxva ./sample/sample.config.toml

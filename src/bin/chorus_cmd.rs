@@ -1,5 +1,5 @@
-use chorus::error::{ChorusError, Error};
-use chorus::globals::GLOBALS;
+use raxva::error::{ChorusError, Error};
+use raxva::globals::GLOBALS;
 use pocket_db::ScreenResult;
 use pocket_types::{Filter, Id, Pubkey, Tags};
 use std::env;
@@ -18,12 +18,12 @@ fn main() -> Result<(), Error> {
     let config_path = args
         .next()
         .ok_or::<Error>(ChorusError::General(USAGE.to_owned()).into())?;
-    let mut config = chorus::load_config(config_path)?;
+    let mut config = raxva::load_config(config_path)?;
     // Force allow of scraping (this program is a scraper)
     config.allow_scraping = true;
 
-    chorus::setup_logging(&config);
-    chorus::setup_store(&config)?;
+    raxva::setup_logging(&config);
+    raxva::setup_store(&config)?;
 
     // Handle command
     let command = args
@@ -72,7 +72,7 @@ fn main() -> Result<(), Error> {
             }
         }
         "dump_users" => {
-            let users = chorus::dump_authorized_users()?;
+            let users = raxva::dump_authorized_users()?;
             for (pubkey, moderator) in users.iter() {
                 println!("{} {}", pubkey, if *moderator { "moderator" } else { "" });
             }
@@ -88,7 +88,7 @@ fn main() -> Result<(), Error> {
             )?;
             let moderator: bool = moderator == "1";
 
-            chorus::add_authorized_user(pk, moderator)?;
+            raxva::add_authorized_user(pk, moderator)?;
         }
         "rm_user" => {
             let pubstr = args.next().ok_or::<Error>(
@@ -96,7 +96,7 @@ fn main() -> Result<(), Error> {
             )?;
             let pk: Pubkey = Pubkey::read_hex(pubstr.as_bytes())?;
 
-            chorus::rm_authorized_user(pk)?;
+            raxva::rm_authorized_user(pk)?;
         }
         _ => {
             return Err(ChorusError::General("Unknown command.".to_owned()).into());

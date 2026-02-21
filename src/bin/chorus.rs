@@ -1,8 +1,8 @@
-use chorus::config::{Config, FriendlyConfig};
-use chorus::counting_stream::CountingStream;
-use chorus::error::Error;
-use chorus::globals::GLOBALS;
-use chorus::ip::HashedPeer;
+use raxva::config::{Config, FriendlyConfig};
+use raxva::counting_stream::CountingStream;
+use raxva::error::Error;
+use raxva::globals::GLOBALS;
+use raxva::ip::HashedPeer;
 use std::env;
 use std::fs::OpenOptions;
 use std::io::Read;
@@ -21,24 +21,24 @@ async fn main() -> Result<(), Error> {
     let _ = args.next(); // ignore program name
     let config_path = args.next().unwrap();
 
-    let config = chorus::load_config(&config_path)?;
+    let config = raxva::load_config(&config_path)?;
 
-    chorus::setup_logging(&config);
+    raxva::setup_logging(&config);
 
     // Log host name
     log::info!(target: "Server", "HOSTNAME = {}", config.hostname);
 
-    chorus::setup_store(&config)?;
+    raxva::setup_store(&config)?;
 
     if let Some(ref blossom_directory) = config.blossom_directory {
-        let filestore = chorus::filestore::FileStore::new(blossom_directory).await?;
+        let filestore = raxva::filestore::FileStore::new(blossom_directory).await?;
         let _ = GLOBALS.filestore.set(filestore);
     }
 
     // TLS setup
     let maybe_tls_acceptor = if config.use_tls {
         log::info!(target: "Server", "Using TLS");
-        Some(chorus::tls::tls_acceptor(&config)?)
+        Some(raxva::tls::tls_acceptor(&config)?)
     } else {
         log::info!(target: "Server", "Not using TLS");
         None
@@ -85,7 +85,7 @@ async fn main() -> Result<(), Error> {
 
                 *GLOBALS.config.write() = config;
 
-                chorus::print_stats();
+                raxva::print_stats();
             },
 
             // Accepts network connections and spawn a task to serve each one
@@ -100,7 +100,7 @@ async fn main() -> Result<(), Error> {
                 if ! GLOBALS.config.read().chorus_is_behind_a_proxy
                     && GLOBALS.config.read().enable_ip_blocking
                 {
-                    let ip_data = chorus::get_ip_data(hashed_peer.ip())?;
+                    let ip_data = raxva::get_ip_data(hashed_peer.ip())?;
                     if ip_data.is_banned() {
                         log::debug!(target: "Client",
                                     "{}: Blocking reconnection until {}",
@@ -121,7 +121,7 @@ async fn main() -> Result<(), Error> {
                             match tls_acceptor.accept(counting_stream).await {
                                 Ok(stream) => {
                                     let io = hyper_util::rt::TokioIo::new(stream);
-                                    chorus::serve(io, hashed_peer).await;
+                                    raxva::serve(io, hashed_peer).await;
                                 },
                                 Err(e) => {
                                     log::error!(
@@ -133,7 +133,7 @@ async fn main() -> Result<(), Error> {
                         },
                         None => {
                             let io = hyper_util::rt::TokioIo::new(counting_stream);
-                            chorus::serve(io, hashed_peer).await;
+                            raxva::serve(io, hashed_peer).await;
                         }
                     };
                 });
@@ -183,7 +183,7 @@ async fn main() -> Result<(), Error> {
         }
     }
 
-    chorus::print_stats();
+    raxva::print_stats();
 
     log::info!(target: "Server", "Syncing and shutting down.");
     let _ = GLOBALS.store.get().unwrap().sync();

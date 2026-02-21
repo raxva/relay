@@ -1,4 +1,4 @@
-use chorus::error::Error;
+use raxva::error::Error;
 use std::env;
 use std::io::BufRead;
 fn main() -> Result<(), Error> {
@@ -10,16 +10,16 @@ fn main() -> Result<(), Error> {
     let _ = args.next(); // ignore program name
     let config_path = args.next().unwrap();
 
-    let config = chorus::load_config(config_path)?;
+    let config = raxva::load_config(config_path)?;
 
-    chorus::setup_logging(&config);
+    raxva::setup_logging(&config);
 
     println!("Chorus must NOT be running when you do this.");
     println!("Proceed? (break out with ^C, or press <ENTER> to proceed)");
     let stdin = std::io::stdin();
     let _ = stdin.lock().lines().next().unwrap().unwrap();
 
-    let store = chorus::setup_store_and_return(&config)?;
+    let store = raxva::setup_store_and_return(&config)?;
 
     let pre_stats = store.stats()?;
     println!("{:?}", pre_stats);

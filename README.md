@@ -1,63 +1,71 @@
-# Chorus
+# Raxva Relay
 
-Chorus is a nostr relay.
+Raxva Relay is a nostr relay.
 
-It is pretty fast: [docs/PERFORMANCE.md](docs/PERFORMANCE.md).
+## Features
 
-It can work as your personal relay (or as an open relay): [docs/PERSONAL_RELAY.md](docs/PERSONAL_RELAY.md)
+- **Fast Performance**: [docs/PERFORMANCE.md](docs/PERFORMANCE.md)
+- **Personal Relay Support**: Works as your personal relay or an open relay: [docs/PERSONAL_RELAY.md](docs/PERSONAL_RELAY.md)
+- **Blossom Server**: Can serve as a blossom server
 
-It can serve as a blossom server.
+## Documentation
 
-To deploy chorus, read [docs/DEPLOYING.md](docs/DEPLOYING.md)
+- [DEPLOYING](docs/DEPLOYING.md) — Deployment guide
+- [CONFIG](docs/CONFIG.md) — Configuration guide
+- [BEHAVIOR](docs/BEHAVIOR.md) — Relay behavior
+- [TOOLS](docs/TOOLS.md) — Command line tools
+- [MANAGEMENT](docs/MANAGEMENT.md) — Management API
 
-To configure chorus read [docs/CONFIG.md](docs/CONFIG.md)
+## Limitations
 
-To undertand the relay's behavior, read [docs/BEHAVIOR.md](docs/BEHAVIOR.md)
+Raxva Relay does not have any provisions for charging users.
 
-To understand command line tools, read [docs/TOOLS.md](docs/TOOLS.md)
+Raxva Relay does not have any provisions for synchronizing events with other relays outside of the nostr protocol.
 
-To understand the management API, read [docs/MANAGEMENT.md](docs/MANAGEMENT.md)
-
-Chorus does not have any provisions for charging users.
-
-Chorus does not have any provisions for synchronizing events with other relays outside of the nostr protocol.
-
-## Alternatives
+## Comparison with Other Relays
 
 ### strfry
 
-[strfry](https://github.com/hoytech/strfry) is a more mature relay that offers additional features including:
+[strfry](https://github.com/hoytech/strfry) is a more mature relay with additional features:
 
+**Advantages:**
 - Synchronizing events with other relays efficiently (negentropy)
 - Zero-downtime restarts
 - Websocket permessage-deflate
 - Plugins for event sifting
 
-However:
+**Raxva Relay Advantages:**
+- Probably faster and more efficient
+- Personal relay rules by default
+- Extensive IP banning and rate limiting for abuse protection
+- Support for NIP-42 (AUTH), NIP-59 (GiftWrap), NIP-65 (Relay Lists), PR 1030 and PR 1325
+- Moderation command-line tool and moderation API (PR 1325)
+- Blossom server support
 
-- Chorus is probably faster (more efficient)
-- Chorus has personal relay rules by default
-- Chorus has extensive IP banning and rate limiting to protect your relay from abuse
-- Chorus supports NIP-42 (AUTH), NIP-59 (GiftWrap), NIP-65 (Relay Lists) and PR 1030 and PR 1325.
-- Chorus has a moderation cmd line tool and a moderation API (PR 1325)
-- Chorus can act as a blossom server
+### Other Relays
 
-### nostream
+- [nostream](https://github.com/Cameri/nostream)
+- [nostr-rs-relay](https://git.sr.ht/~gheartsfield/nostr-rs-relay)
+- [khatru](https://github.com/fiatjaf/khatru)
 
-[nostream](https://github.com/Cameri/nostream)
+## Git Branches
 
-### nostr-rs-relay
+Use the `latest` branch for production deployments.
 
-[nostr-rs-relay](https://git.sr.ht/~gheartsfield/nostr-rs-relay)
+⚠️ **Do not use the `master` branch.** Master is updated with breaking changes that are unstable and may require configuration updates. Upgrade instructions will not be announced until official release.
 
-### khatru
+## About
 
-[khatru](https://github.com/fiatjaf/khatru)
+**Raxva Relay** is a fork of [Chorus](https://github.com/mikedilger/chorus), a high-performance nostr relay by Michael Dilger.
 
-## Git branches
+### License
 
-Use the branch `latest`.
+This project is licensed under the [MIT License](LICENSE.txt). See LICENSE.txt for details.
 
-Do not run off of the `master` branch. Master is updated with breaking changes that are
-not only unstable, but which may require you to update your configuration. I will not
-announce upgrade instructions until release.
+### Contributing
+
+Contributions are welcome! Please feel free to submit issues and pull requests.
+
+### Original Project
+
+Raxva Relay is built upon the excellent work of the Chorus project. We appreciate the original contributions that made this relay possible.

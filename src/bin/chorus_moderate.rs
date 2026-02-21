@@ -1,5 +1,5 @@
-use chorus::error::Error;
-use chorus::globals::GLOBALS;
+use raxva::error::Error;
+use raxva::globals::GLOBALS;
 use pocket_db::ScreenResult;
 use pocket_types::{Event, Filter, Kind};
 use std::env;
@@ -14,11 +14,11 @@ fn main() -> Result<(), Error> {
     let _ = args.next(); // ignore program name
     let config_path = args.next().unwrap();
 
-    let mut config = chorus::load_config(config_path)?;
+    let mut config = raxva::load_config(config_path)?;
     // Force allow of scraping (this program is a scraper)
     config.allow_scraping = true;
 
-    chorus::setup_logging(&config);
+    raxva::setup_logging(&config);
 
     // These kinds don't need approval:
     let allowed_kinds = [
@@ -31,7 +31,7 @@ fn main() -> Result<(), Error> {
         Kind::from(7),     // Reaction
     ];
 
-    chorus::setup_store(&config)?;
+    raxva::setup_store(&config)?;
 
     let mut buffer: [u8; 128] = [0; 128];
     let (_incount, _outcount, filter) = Filter::from_json(b"{}", &mut buffer)?;
@@ -60,7 +60,7 @@ fn main() -> Result<(), Error> {
         }
 
         // Skip if the author is authorized user
-        if chorus::is_authorized_user(event.pubkey()) {
+        if raxva::is_authorized_user(event.pubkey()) {
             continue;
         }
 
@@ -69,17 +69,17 @@ fn main() -> Result<(), Error> {
         //println!("{s}");
 
         // Skip if event marked approved
-        if matches!(chorus::get_event_approval(event.id()), Ok(Some(true))) {
+        if matches!(raxva::get_event_approval(event.id()), Ok(Some(true))) {
             continue;
         }
 
         // Skip if pubkey marked approved
-        if matches!(chorus::get_pubkey_approval(event.pubkey()), Ok(Some(true))) {
+        if matches!(raxva::get_pubkey_approval(event.pubkey()), Ok(Some(true))) {
             continue;
         }
 
         // Delete if pubkey marked banned
-        if matches!(chorus::get_pubkey_approval(event.pubkey()), Ok(Some(false))) {
+        if matches!(raxva::get_pubkey_approval(event.pubkey()), Ok(Some(false))) {
             GLOBALS.store.get().unwrap().remove_event(event.id())?;
             continue;
         }
@@ -103,23 +103,23 @@ fn main() -> Result<(), Error> {
             }
             match input.bytes().next().unwrap() {
                 b'p' => {
-                    chorus::mark_pubkey_approval(event.pubkey(), true)?;
+                    raxva::mark_pubkey_approval(event.pubkey(), true)?;
                     println!("User approved.");
                     break;
                 }
                 b'P' => {
-                    chorus::mark_pubkey_approval(event.pubkey(), false)?;
+                    raxva::mark_pubkey_approval(event.pubkey(), false)?;
                     GLOBALS.store.get().unwrap().remove_event(event.id())?;
                     println!("User banned.");
                     break;
                 }
                 b'i' => {
-                    chorus::mark_event_approval(event.id(), true)?;
+                    raxva::mark_event_approval(event.id(), true)?;
                     println!("Event approved.");
                     break;
                 }
                 b'I' => {
-                    chorus::mark_event_approval(event.id(), false)?;
+                    raxva::mark_event_approval(event.id(), false)?;
                     GLOBALS.store.get().unwrap().remove_event(event.id())?;
                     println!("Event banned.");
                     break;

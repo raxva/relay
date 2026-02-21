@@ -284,45 +284,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "baf1de4339761588bc0619e3cbc0120ee582ebb74b53b4efbf79117bd2da40fd"
 
 [[package]]
-name = "chorus"
-version = "2.0.0"
-dependencies = [
- "base64 0.22.1",
- "bitcoin_hashes 0.16.0",
- "dashmap",
- "env_logger",
- "futures",
- "hex",
- "http",
- "http-body-util",
- "hyper",
- "hyper-tungstenite",
- "hyper-util",
- "lazy_static",
- "log",
- "mime-sniffer",
- "mime2ext",
- "negentropy",
- "parking_lot",
- "pocket-db",
- "pocket-types",
- "rustls-pemfile",
- "rustls-pki-types",
- "secp256k1 0.30.0",
- "serde",
- "serde_json",
- "speedy",
- "tempfile",
- "textnonce",
- "tokio",
- "tokio-rustls",
- "tokio-stream",
- "tokio-util",
- "toml",
- "url",
-]
-
-[[package]]
 name = "clang-sys"
 version = "1.8.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1511,6 +1472,45 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ca3129af7b92a17112d59ad498c6f81eaf463253766b90396d39ea7a39d6613c"
 dependencies = [
  "rand_core 0.5.1",
+]
+
+[[package]]
+name = "raxva"
+version = "2.0.0"
+dependencies = [
+ "base64 0.22.1",
+ "bitcoin_hashes 0.16.0",
+ "dashmap",
+ "env_logger",
+ "futures",
+ "hex",
+ "http",
+ "http-body-util",
+ "hyper",
+ "hyper-tungstenite",
+ "hyper-util",
+ "lazy_static",
+ "log",
+ "mime-sniffer",
+ "mime2ext",
+ "negentropy",
+ "parking_lot",
+ "pocket-db",
+ "pocket-types",
+ "rustls-pemfile",
+ "rustls-pki-types",
+ "secp256k1 0.30.0",
+ "serde",
+ "serde_json",
+ "speedy",
+ "tempfile",
+ "textnonce",
+ "tokio",
+ "tokio-rustls",
+ "tokio-stream",
+ "tokio-util",
+ "toml",
+ "url",
 ]
 
 [[package]]

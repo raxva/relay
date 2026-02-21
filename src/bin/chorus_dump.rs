@@ -1,5 +1,5 @@
-use chorus::error::Error;
-use chorus::globals::GLOBALS;
+use raxva::error::Error;
+use raxva::globals::GLOBALS;
 use pocket_db::ScreenResult;
 use pocket_types::{Event, Filter};
 use std::env;
@@ -13,13 +13,13 @@ fn main() -> Result<(), Error> {
     let _ = args.next(); // ignore program name
     let config_path = args.next().unwrap();
 
-    let mut config = chorus::load_config(config_path)?;
+    let mut config = raxva::load_config(config_path)?;
 
     // Force allow of scraping (this program is a scraper)
     config.allow_scraping = true;
 
-    chorus::setup_logging(&config);
-    chorus::setup_store(&config)?;
+    raxva::setup_logging(&config);
+    raxva::setup_store(&config)?;
 
     let mut buffer: [u8; 128] = [0; 128];
     let (_incount, _outcount, filter) = Filter::from_json(b"{}", &mut buffer)?;
